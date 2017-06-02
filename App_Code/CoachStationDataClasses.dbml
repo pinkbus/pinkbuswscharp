@@ -1,0 +1,452 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="CoachStationManager" Class="CoachStationDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=VICTOR-PC;Initial Catalog=CoachStationManager;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="CoachStationManagerConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BOOKING_PERSON" Member="BOOKING_PERSONs">
+    <Type Name="BOOKING_PERSON">
+      <Column Name="EMAIL" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BOOKING_PERSON_TEL" Type="System.String" DbType="NVarChar(12) NOT NULL" CanBeNull="false" />
+      <Column Name="BOOKING_PERSON_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PASSWORD" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Association Name="BOOKING_PERSON_TICKET_ORDER" Member="TICKET_ORDERs" ThisKey="EMAIL" OtherKey="EMAIL" Type="TICKET_ORDER" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TIMETABLE" Member="TIMETABLEs">
+    <Type Name="TIMETABLE">
+      <Column Name="EMPLOYEE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="LICENSE_PLATE" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="COACH_ROUTE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FINSHED_STATUS" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="DEPARTURE_DATE" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+      <Association Name="COACH_TIMETABLE" Member="COACH" ThisKey="LICENSE_PLATE" OtherKey="LICENSE_PLATE" Type="COACH" IsForeignKey="true" />
+      <Association Name="COACH_ROUTE_TIMETABLE" Member="COACH_ROUTE" ThisKey="COACH_ROUTE_ID" OtherKey="COACH_ROUTE_ID" Type="COACH_ROUTE" IsForeignKey="true" />
+      <Association Name="EMPLOYEE_TIMETABLE" Member="EMPLOYEE" ThisKey="EMPLOYEE_ID" OtherKey="EMPLOYEE_ID" Type="EMPLOYEE" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BRAND_OFFICE" Member="BRAND_OFFICEs">
+    <Type Name="BRAND_OFFICE">
+      <Column Name="COACH_STATION_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="COMPANY_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="OFFICE_NAME" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="OFFICE_TEL" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
+      <Column Name="OFFICE_PICTURE" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="COACH_STATION_BRAND_OFFICE" Member="COACH_STATION" ThisKey="COACH_STATION_ID" OtherKey="COACH_STATION_ID" Type="COACH_STATION" IsForeignKey="true" />
+      <Association Name="PASSENGER_TRANSPORT_CO_BRAND_OFFICE" Member="PASSENGER_TRANSPORT_CO" ThisKey="COMPANY_ID" OtherKey="COMPANY_ID" Type="PASSENGER_TRANSPORT_CO" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.COACH" Member="COACHes">
+    <Type Name="COACH">
+      <Column Name="LICENSE_PLATE" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TYPE_SEAT" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TOTAL_SEATS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EXTRA_FEE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="COACH_TIMETABLE" Member="TIMETABLEs" ThisKey="LICENSE_PLATE" OtherKey="LICENSE_PLATE" Type="TIMETABLE" />
+      <Association Name="COACH_SEAT" Member="SEATs" ThisKey="LICENSE_PLATE" OtherKey="LICENSE_PLATE" Type="SEAT" />
+    </Type>
+  </Table>
+  <Table Name="dbo.COACH_ROUTE" Member="COACH_ROUTEs">
+    <Type Name="COACH_ROUTE">
+      <Column Name="COACH_ROUTE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="COACH_ROUTE_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="COACH_ROUTE_PRICE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DEPARTURE_TIME" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Column Name="ROUTE_TIME" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="COACH_ROUTE_TIMETABLE" Member="TIMETABLEs" ThisKey="COACH_ROUTE_ID" OtherKey="COACH_ROUTE_ID" Type="TIMETABLE" />
+      <Association Name="COACH_ROUTE_ITINERARY" Member="ITINERARies" ThisKey="COACH_ROUTE_ID" OtherKey="COACH_ROUTE_ID" Type="ITINERARY" />
+      <Association Name="COACH_ROUTE_TICKET" Member="TICKETs" ThisKey="COACH_ROUTE_ID" OtherKey="COACH_ROUTE_ID" Type="TICKET" />
+    </Type>
+  </Table>
+  <Table Name="dbo.COACH_STATION" Member="COACH_STATIONs">
+    <Type Name="COACH_STATION">
+      <Column Name="COACH_STATION_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="COACH_STATION_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="COACH_STATION_ADDRESS" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="COACH_STATION_TEL" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="COACH_STATION_PICTURE" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="CITY" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Association Name="COACH_STATION_BRAND_OFFICE" Member="BRAND_OFFICEs" ThisKey="COACH_STATION_ID" OtherKey="COACH_STATION_ID" Type="BRAND_OFFICE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EMPLOYEE" Member="EMPLOYEEs">
+    <Type Name="EMPLOYEE">
+      <Column Name="EMPLOYEE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="EMPLOYEE_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EMPLOYEE_TEL" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="POSITION" Type="System.String" DbType="Char(10)" CanBeNull="true" />
+      <Column Name="EMPLOYEE_PICUTURE" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="EMPLOYEE_USERNAME" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="EMPLOYEE_PASSWORD" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="COMPANY_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Association Name="EMPLOYEE_TIMETABLE" Member="TIMETABLEs" ThisKey="EMPLOYEE_ID" OtherKey="EMPLOYEE_ID" Type="TIMETABLE" />
+      <Association Name="PASSENGER_TRANSPORT_CO_EMPLOYEE" Member="PASSENGER_TRANSPORT_CO" ThisKey="COMPANY_ID" OtherKey="COMPANY_ID" Type="PASSENGER_TRANSPORT_CO" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ITINERARY" Member="ITINERARies">
+    <Type Name="ITINERARY">
+      <Column Name="COACH_ROUTE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ITINERARY_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="START_TIME" Type="System.String" DbType="VarChar(6) NOT NULL" CanBeNull="false" />
+      <Column Name="BOARDING" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DROPPING" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="END_TIME" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Association Name="COACH_ROUTE_ITINERARY" Member="COACH_ROUTE" ThisKey="COACH_ROUTE_ID" OtherKey="COACH_ROUTE_ID" Type="COACH_ROUTE" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PASSENGER_TRANSPORT_CO" Member="PASSENGER_TRANSPORT_COs">
+    <Type Name="PASSENGER_TRANSPORT_CO">
+      <Column Name="COMPANY_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="COMPANY_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="COMPANY_TEL" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="COMPANY_PICTURE" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="PASSENGER_TRANSPORT_CO_BRAND_OFFICE" Member="BRAND_OFFICEs" ThisKey="COMPANY_ID" OtherKey="COMPANY_ID" Type="BRAND_OFFICE" />
+      <Association Name="PASSENGER_TRANSPORT_CO_EMPLOYEE" Member="EMPLOYEEs" ThisKey="COMPANY_ID" OtherKey="COMPANY_ID" Type="EMPLOYEE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PAYMENT" Member="PAYMENTs">
+    <Type Name="PAYMENT">
+      <Column Name="PAYMENT_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PAYMENT_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="PAYMENT_TICKET" Member="TICKETs" ThisKey="PAYMENT_ID" OtherKey="PAYMENT_ID" Type="TICKET" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SEAT" Member="SEATs">
+    <Type Name="SEAT">
+      <Column Name="SEAT_ID" Type="System.String" DbType="NVarChar(3) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="LICENSE_PLATE" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SEAT_STATUS" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="COACH_SEAT" Member="COACH" ThisKey="LICENSE_PLATE" OtherKey="LICENSE_PLATE" Type="COACH" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TICKET" Member="TICKETs">
+    <Type Name="TICKET">
+      <Column Name="TICKET_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PASSENGER_TEL" Type="System.String" DbType="NVarChar(12) NOT NULL" CanBeNull="false" />
+      <Column Name="PASSENGER_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DEPARTURE_DATE" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="BOARDING" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DROPPING" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SEAT_ID" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="COACH_ROUTE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="EMAIL" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PAYMENT_ID" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="COMPANY_ID" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Association Name="TICKET_TICKET_ORDER" Member="TICKET_ORDERs" ThisKey="TICKET_ID" OtherKey="TICKET_ID" Type="TICKET_ORDER" />
+      <Association Name="COACH_ROUTE_TICKET" Member="COACH_ROUTE" ThisKey="COACH_ROUTE_ID" OtherKey="COACH_ROUTE_ID" Type="COACH_ROUTE" IsForeignKey="true" />
+      <Association Name="PAYMENT_TICKET" Member="PAYMENT" ThisKey="PAYMENT_ID" OtherKey="PAYMENT_ID" Type="PAYMENT" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TICKET_ORDER" Member="TICKET_ORDERs">
+    <Type Name="TICKET_ORDER">
+      <Column Name="TICKET_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="EMAIL" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PAYOUT_DATE" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="ORDER_DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TICKET_STATUS" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="RECEVIED_DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="BOOKING_PERSON_TICKET_ORDER" Member="BOOKING_PERSON" ThisKey="EMAIL" OtherKey="EMAIL" Type="BOOKING_PERSON" IsForeignKey="true" />
+      <Association Name="TICKET_TICKET_ORDER" Member="TICKET" ThisKey="TICKET_ID" OtherKey="TICKET_ID" Type="TICKET" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.proFROM_CITY" Method="proFROM_CITY">
+    <ElementType Name="proFROM_CITYResult">
+      <Column Name="CITY" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proTO_CITY" Method="proTO_CITY">
+    <Parameter Name="city_name" Type="System.String" DbType="VarChar(20)" />
+    <ElementType Name="proTO_CITYResult">
+      <Column Name="DROPPING" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proBOARDING_LIST" Method="proBOARDING_LIST">
+    <Parameter Name="coach_route_id" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="company_name" Type="System.String" DbType="NVarChar(20)" />
+    <ElementType Name="proBOARDING_LISTResult">
+      <Column Name="" Member="Column1" Type="System.String" DbType="NVarChar(81)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proDROPPING_LIST" Method="proDROPPING_LIST">
+    <Parameter Name="coach_route_id" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="company_name" Type="System.String" DbType="NVarChar(20)" />
+    <ElementType Name="proDROPPING_LISTResult">
+      <Column Name="" Member="Column1" Type="System.String" DbType="NVarChar(81)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proROUTE_COACH_TO_LIST" Method="proROUTE_COACH_TO_LIST">
+    <Parameter Name="from" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="to" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="dp_date" Type="System.String" DbType="NVarChar(15)" />
+    <ElementType Name="proROUTE_COACH_TO_LISTResult">
+      <Column Name="COACH_ROUTE_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="COACH_ROUTE_PRICE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="START_TIME" Type="System.String" DbType="VarChar(6) NOT NULL" CanBeNull="false" />
+      <Column Name="ROUTE_TIME" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TOTAL_SEATS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TYPE_SEAT" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="COMPANY_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="COMPANY_ID" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="END_TIME" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Column Name="COACH_ROUTE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proLOGIN" Method="proLOGIN">
+    <Parameter Name="email" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="pass" Type="System.String" DbType="NVarChar(20)" />
+    <ElementType Name="proLOGINResult">
+      <Column Name="EMAIL" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="BOOKING_PERSON_TEL" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="BOOKING_PERSON_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proSIGNUP" Method="proSIGNUP">
+    <Parameter Name="email" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="tel" Type="System.String" DbType="NVarChar(15)" />
+    <Parameter Name="name" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="password" Type="System.String" DbType="NVarChar(16)" />
+    <ElementType Name="proSIGNUPResult">
+      <Column Name="EMAIL" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="BOOKING_PERSON_TEL" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="BOOKING_PERSON_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proUPDATE_STATUS_TICKET" Method="proUPDATE_STATUS_TICKET">
+    <Parameter Name="ticket_id" Type="System.Int32" DbType="Int" />
+    <ElementType Name="proUPDATE_STATUS_TICKETResult">
+      <Column Name="RESULT" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proTICKET_BOOKING" Method="proTICKET_BOOKING">
+    <Parameter Name="tel" Type="System.String" DbType="NVarChar(12)" />
+    <Parameter Name="name" Type="System.String" DbType="NVarChar(40)" />
+    <Parameter Name="dpt_date" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="boarding" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="dropping" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="seat_id" Type="System.String" DbType="NVarChar(3)" />
+    <Parameter Name="coach_route_id" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="email" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="order_id" Type="System.String" DbType="VarChar(10)" />
+    <ElementType Name="proTICKET_BOOKINGResult">
+      <Column Name="RESULT" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proUPDATE_PAYMENT" Method="proUPDATE_PAYMENT">
+    <Parameter Name="order_id" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="payment_id" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="ticket_id" Type="System.Int32" DbType="Int" />
+    <ElementType Name="proUPDATE_PAYMENTResult">
+      <Column Name="ORDER_ID" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TICKET_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EMAIL" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PAYOUT_DATE" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="ORDER_DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TICKET_STATUS" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="RECEVIED_DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PAYMENT_ID" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proTICKET_ORDER_LIST" Method="proTICKET_ORDER_LIST">
+    <Parameter Name="order_id" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="email" Type="System.String" DbType="NVarChar(30)" />
+    <ElementType Name="proTICKET_ORDER_LISTResult">
+      <Column Name="TICKET_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EMAIL" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ORDER_DATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proDELETE_TICKET" Method="proDELETE_TICKET">
+    <Parameter Name="ticket_id" Type="System.Int32" DbType="Int" />
+    <Parameter Name="email" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="proDELETE_TICKETResult">
+      <Column Name="RESULT" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proSEAT_TO_LIST" Method="proSEAT_TO_LIST">
+    <Parameter Name="from" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="to" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="dpt_date" Type="System.String" DbType="NVarChar(15)" />
+    <Parameter Name="route_id" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="company_id" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="proSEAT_TO_LISTResult">
+      <Column Name="SEAT_ID" Type="System.String" DbType="NVarChar(3) NOT NULL" CanBeNull="false" />
+      <Column Name="SEAT_STATUS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EXTRA_FEE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LICENSE_PLATE" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proCOACHSTATIONGetTOList" Method="proCOACHSTATIONGetTOList">
+    <ElementType Name="proCOACHSTATIONGetTOListResult">
+      <Column Name="COACH_STATION_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="COACH_STATION_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="COACH_STATION_ADDRESS" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="COACH_STATION_TEL" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="COACH_STATION_PICTURE" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
+      <Column Name="CITY" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proCOACHSTATIONInsert" Method="proCOACHSTATIONInsert">
+    <Parameter Name="id" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="name" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="address" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="tel" Type="System.String" DbType="NVarChar(12)" />
+    <Parameter Name="pic" Type="System.Data.Linq.Binary" DbType="Image" />
+    <Parameter Name="city" Type="System.String" DbType="NVarChar(30)" />
+    <ElementType Name="proCOACHSTATIONInsertResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proGetListOfficebyCoachStation" Method="proGetListOfficebyCoachStation">
+    <Parameter Name="coachstation" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="proGetListOfficebyCoachStationResult">
+      <Column Name="COACH_STATION_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="COMPANY_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="OFFICE_NAME" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="OFFICE_TEL" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
+      <Column Name="OFFICE_PICTURE" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proGetListOfficebyCompany" Method="proGetListOfficebyCompany">
+    <Parameter Name="company" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="proGetListOfficebyCompanyResult">
+      <Column Name="COACH_STATION_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="COMPANY_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="OFFICE_NAME" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="OFFICE_TEL" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
+      <Column Name="OFFICE_PICTURE" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proINSERT_BRAND_OFFICE" Method="proINSERT_BRAND_OFFICE">
+    <Parameter Name="coachstationid" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="companyid" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="officename" Type="System.String" DbType="NVarChar(70)" />
+    <Parameter Name="officetel" Type="System.String" DbType="NVarChar(13)" />
+    <Parameter Name="office_picture" Type="System.Data.Linq.Binary" DbType="Image" />
+    <ElementType Name="proINSERT_BRAND_OFFICEResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proCOACHGetTOList" Method="proCOACHGetTOList">
+    <ElementType Name="proCOACHGetTOListResult">
+      <Column Name="LICENSE_PLATE" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TYPE_SEAT" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="TOTAL_SEATS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EXTRA_FEE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proCOACHInsert" Method="proCOACHInsert">
+    <Parameter Name="bienso" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="loaixe" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="tongghe" Type="System.Int32" DbType="Int" />
+    <Parameter Name="fee" Type="System.Int32" DbType="Int" />
+    <ElementType Name="proCOACHInsertResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proCOACHROUTEInsert" Method="proCOACHROUTEInsert">
+    <Parameter Name="routeid" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="routename" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="price" Type="System.Int32" DbType="Int" />
+    <Parameter Name="start_time" Type="System.String" DbType="VarChar(5)" />
+    <Parameter Name="route_time" Type="System.Int32" DbType="Int" />
+    <ElementType Name="proCOACHROUTEInsertResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proCOACHROUTEList" Method="proCOACHROUTEList">
+    <ElementType Name="proCOACHROUTEListResult">
+      <Column Name="COACH_ROUTE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="COACH_ROUTE_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="COACH_ROUTE_PRICE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DEPARTURE_TIME" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Column Name="ROUTE_TIME" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proITINERARYListbyCOACHROUTE" Method="proITINERARYListbyCOACHROUTE">
+    <Parameter Name="idroute" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="proITINERARYListbyCOACHROUTEResult">
+      <Column Name="COACH_ROUTE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="ITINERARY_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="START_TIME" Type="System.String" DbType="VarChar(6) NOT NULL" CanBeNull="false" />
+      <Column Name="BOARDING" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="DROPPING" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="END_TIME" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proITINERARYInsert" Method="proITINERARYInsert">
+    <Parameter Name="id" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="name" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="startpoint" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="starttime" Type="System.String" DbType="VarChar(6)" />
+    <Parameter Name="endpoint" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="endtime" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="proITINERARYInsertResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proGET_LIST_COMPANY" Method="proGET_LIST_COMPANY">
+    <ElementType Name="proGET_LIST_COMPANYResult">
+      <Column Name="COMPANY_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="COMPANY_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="COMPANY_TEL" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="COMPANY_PICTURE" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proINSERT_COMPANY" Method="proINSERT_COMPANY">
+    <Parameter Name="id" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="name" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="tel" Type="System.String" DbType="NVarChar(13)" />
+    <Parameter Name="image" Type="System.Data.Linq.Binary" DbType="Image" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.proTIMETABLEGetTOList" Method="proTIMETABLEGetTOList">
+    <ElementType Name="proTIMETABLEGetTOListResult">
+      <Column Name="EMPLOYEE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="LICENSE_PLATE" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="COACH_ROUTE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="FINSHED_STATUS" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="DEPARTURE_DATE" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proUPDATE_TIMETABLE" Method="proUPDATE_TIMETABLE">
+    <Parameter Name="companyid" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.proLOGINForEMPLOYEE" Method="proLOGINForEMPLOYEE">
+    <Parameter Name="username" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="matkhau" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="company" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="proLOGINForEMPLOYEEResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proEMPLOYEEInsert" Method="proEMPLOYEEInsert">
+    <Parameter Name="id" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="name" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="tel" Type="System.String" DbType="NVarChar(12)" />
+    <Parameter Name="vitri" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="pic" Type="System.Data.Linq.Binary" DbType="Image" />
+    <Parameter Name="nhaxe" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="plate" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="pass" Type="System.String" DbType="NVarChar(50)" />
+    <ElementType Name="proEMPLOYEEInsertResult">
+      <Column Name="" Member="Column1" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.proUPDATE_EMPLOYEE" Method="proUPDATE_EMPLOYEE">
+    <Parameter Name="id" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="image" Type="System.Data.Linq.Binary" DbType="Image" />
+    <Parameter Name="plate" Type="System.String" DbType="NVarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.proEMPLOYEEListbyCOMPANY" Method="proEMPLOYEEListbyCOMPANY">
+    <Parameter Name="stationofficeid" Type="System.String" DbType="NVarChar(10)" />
+    <ElementType Name="proEMPLOYEEListbyCOMPANYResult">
+      <Column Name="EMPLOYEE_ID" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="EMPLOYEE_NAME" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EMPLOYEE_TEL" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="POSITION" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="EMPLOYEE_PICUTURE" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
+      <Column Name="EMPLOYEE_USERNAME" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="EMPLOYEE_PASSWORD" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="COMPANY_ID" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="LICENSE_PLATE" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>
